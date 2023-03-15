@@ -1,119 +1,139 @@
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.TreeMap;
 
-public class Calculate {
+class Calculator {
     public static void main(String[] args) {
+        Converter converter = new Converter();
+        String[] actions = {"+", "-", "/", "*"};
+        String[] regexActions = {"\\+", "-", "/", "\\*"};
+        Scanner scn = new Scanner(System.in);
+        System.out.print("Введите выражение: ");
+        String exp = scn.nextLine();
+        int actionIndex=-1;
+        for (int i = 0; i < actions.length; i++) {
+            if(exp.contains(actions[i])){
+                actionIndex = i;
+            }
+        }
+        if(actionIndex==-1){
+            System.out.println("throws Exception //т.к. строка не является математической операцией");
+            return;
+        }
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите пример без пробелов: ");
-        String text = scanner.nextLine();
-        String[] d = text.split(" ");
+        String[] data = exp.split(regexActions[actionIndex]);
+        if(converter.isRoman(data[0]) == converter.isRoman(data[1])){
+            int a,b;
+            boolean isRoman = converter.isRoman(data[0]);
+            if(isRoman){
+                a = converter.romanToInt(data[0]);
+                b = converter.romanToInt(data[1]);
 
-
-        if(d.length != 3){
-            System.out.println("throws Exception //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-        }else{
-            String a = String.valueOf(d[0]);
-            String b = String.valueOf(d[1]);
-            String c = String.valueOf(d[2]);
-
-
-            String[] string = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXVIII", "XXIX", "XL", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX", "LX", "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX", "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "LC", "XC", "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
-            int x = 0;
-            int y = 0;
-
-
-
-
-
-            if ((a.equals("I") || a.equals("II") || a.equals("III") || a.equals("IV") || a.equals("V") || a.equals("VI") || a.equals("VII") || a.equals("VIII") || a.equals("IX") || a.equals("X")) && (c.equals("1") || c.equals("2") || c.equals("3") || c.equals("4") || c.equals("5") || c.equals("6") || c.equals("7") || c.equals("8") || c.equals("9") || c.equals("10"))){
-                System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-            }else if ((c.equals("I") || c.equals("II") || c.equals("III") || c.equals("IV") || c.equals("V") || c.equals("VI") || c.equals("VII") || c.equals("VIII") || c.equals("IX") || c.equals("X")) && (a.equals("1") || a.equals("2") || a.equals("3") || a.equals("4") || a.equals("5") || a.equals("6") || a.equals("7") || a.equals("8") || a.equals("9") || a.equals("10"))){
-                System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-            }else if ((a.equals("I") || a.equals("II") || a.equals("III") || a.equals("IV") || a.equals("V") || a.equals("VI") || a.equals("VII") || a.equals("VIII") || a.equals("IX") || a.equals("X")) && (c.equals("I") || c.equals("II") || c.equals("III") || c.equals("IV") || c.equals("V") || c.equals("VI") || c.equals("VII") || c.equals("VIII") || c.equals("IX") || c.equals("X"))){
-                for(int i = 0; i < string.length; i++){
-                    if(a.equals(string[i])){
-                        x = i + 1;
-                    }
-                    if(c.equals(string[i])){
-                        y = i + 1;
-                    }
-                }
-                if (x > 10 || y > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("+")) {
-                    int summ = x + y;
-                    System.out.println(string[summ - 1]);
-                }
-
-                if (x > 10 || y > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("-")) {
-                    if ((x - y) < 0){
-                        System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
-                    }else {
-                        int summ = x - y;
-                        System.out.println(string[summ - 1]);
-                    }
-                }
-
-                if (x > 10 || y > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("*")) {
-                    int summ = x * y;
-                    System.out.println(string[summ - 1]);
-                }
-
-                if (x > 10 || y > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("/")) {
-                    int summ = x / y;
-                    System.out.println(string[summ - 1]);
-                }
             }else{
-                if (Integer.parseInt(a) > 10 || Integer.parseInt(c) > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("+")) {
-                    int summ = Integer.parseInt(a) + Integer.parseInt(c);
-                    if(summ < 0){
-                        System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
-                    }else{
-                        System.out.println(summ);
+                a = Integer.parseInt(data[0]);
+                b = Integer.parseInt(data[1]);
+            }
+            int result = switch (actions[actionIndex]) {
+                case "+" -> a + b;
+                case "-" -> a - b;
+                case "*" -> a * b;
+                default -> a / b;
+            };
+            if(isRoman){
+                if (actions.length > 4){
+                    try {
+                        throw new IOException();
+                    } catch (IOException e){
+                        System.out.println("throws Exception //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
                     }
-                }
-
-                if (Integer.parseInt(a) > 10 || Integer.parseInt(c) > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("-")) {
-                    int summ = Integer.parseInt(a) - Integer.parseInt(c);
-                    if(summ < 0){
-                        System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
-                    }else{
-                        System.out.println(summ);
-                    }
-                }
-
-                if (Integer.parseInt(a) > 10 || Integer.parseInt(c) > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("*")) {
-                    int summ = Integer.parseInt(a) * Integer.parseInt(c);
-                    if(summ < 0){
-                        System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
-                    }else{
-                        System.out.println(summ);
-                    }
-                }
-
-                if (Integer.parseInt(a) > 10 || Integer.parseInt(c) > 10){
-                    System.out.print("throws Exception //т.к. число больше 10");
-                }else if (b.equals("/")) {
-                    int summ = Integer.parseInt(a) / Integer.parseInt(c);
-                    if(summ < 0){
-                        System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
-                    }else{
-                        System.out.println(summ);
+                } else {
+                    if (result < 0) {
+                        try {
+                            throw new IOException();
+                        } catch (IOException e) {
+                            System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
+                        }
+                    } else {
+                        System.out.println(converter.intToRoman(result));
                     }
                 }
             }
+            else{
+                if (actions.length > 4){
+                    try {
+                        throw new IOException();
+                    } catch (IOException e){
+                        System.out.println("throws Exception //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+                    }
+                } else {
+                    System.out.println(result);
+                }
+            }
+        }else{
+            System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
         }
     }
 }
+class Converter {
+    TreeMap<Character, Integer> romanKeyMap = new TreeMap<>();
+    TreeMap<Integer, String> arabianKeyMap = new TreeMap<>();
+
+    public Converter() {
+        romanKeyMap.put('I', 1);
+        romanKeyMap.put('V', 5);
+        romanKeyMap.put('X', 10);
+        romanKeyMap.put('L', 50);
+        romanKeyMap.put('C', 100);
+        romanKeyMap.put('D', 500);
+        romanKeyMap.put('M', 1000);
+
+        arabianKeyMap.put(1000, "M");
+        arabianKeyMap.put(900, "CM");
+        arabianKeyMap.put(500, "D");
+        arabianKeyMap.put(400, "CD");
+        arabianKeyMap.put(100, "C");
+        arabianKeyMap.put(90, "XC");
+        arabianKeyMap.put(50, "L");
+        arabianKeyMap.put(40, "XL");
+        arabianKeyMap.put(10, "X");
+        arabianKeyMap.put(9, "IX");
+        arabianKeyMap.put(5, "V");
+        arabianKeyMap.put(4, "IV");
+        arabianKeyMap.put(1, "I");
+
+    }
+
+
+    public boolean isRoman(String number){
+        return romanKeyMap.containsKey(number.charAt(0));
+    }
+
+    public String intToRoman(int number) {
+        String roman = "";
+        int arabianKey;
+        do {
+            arabianKey = arabianKeyMap.floorKey(number);
+            roman += arabianKeyMap.get(arabianKey);
+            number -= arabianKey;
+        } while (number != 0);
+        return roman;
+    }
+
+    public int romanToInt(String s) {
+        int end = s.length() - 1;
+        char[] arr = s.toCharArray();
+        int arabian;
+        int result = romanKeyMap.get(arr[end]);
+        for (int i = end - 1; i >= 0; i--) {
+            arabian = romanKeyMap.get(arr[i]);
+
+            if (arabian < romanKeyMap.get(arr[i + 1])) {
+                result -= arabian;
+            } else {
+                result += arabian;
+            }
+        }
+        return result;
+    }
+}
+
